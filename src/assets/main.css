@@ -1,0 +1,34 @@
+@import 'primeicons/primeicons.css';
+
+:root {
+  --c360-fondo: #f4f6fa;
+  --c360-tarjeta: #ffffff;
+  --c360-texto: #1f2937;
+  --c360-texto-suave: #6b7280;
+  --c360-borde: #e5e7eb;
+  --c360-primario: #2a78d6;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#app {
+  min-height: 100%;
+  margin: 0;
+}
+
+body {
+  font-family:
+    system-ui,
+    -apple-system,
+    'Segoe UI',
+    Roboto,
+    sans-serif;
+  background: var(--c360-fondo);
+  color: var(--c360-texto);
+}
