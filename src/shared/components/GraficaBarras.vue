@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import Chart from 'primevue/chart'
+import Chart from './ChartSuave.vue'
 import TablaAlterna from './TablaAlterna.vue'
 import { CATEGORICA, colorDe, etiquetaLegible } from '@/shared/utils/paleta'
 import { decimal, entero } from '@/shared/utils/formato'

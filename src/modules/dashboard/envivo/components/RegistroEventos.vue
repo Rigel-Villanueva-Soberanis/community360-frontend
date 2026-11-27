@@ -26,7 +26,7 @@ const TEXTO = {
     titulo="Últimos eventos"
     subtitulo="Se actualiza al instante · sin texto ni ubicación"
     :vacio="eventos.length === 0"
-    mensaje-vacio="Esperando cambios…"
+    mensaje-vacio="Sin eventos nuevos"
   >
     <ol class="eventos" aria-live="polite">
       <li

@@ -68,16 +68,41 @@ describe('AppLayout', () => {
     expect(w.find('.app__titulo').text()).toBe('Resumen')
   })
 
-  it('Cerrar sesión llama a la API, limpia la sesión y va a /login', async () => {
+  it('Cerrar sesión pide confirmación y, al confirmar, llama a la API, limpia la sesión y va a /login', async () => {
     const { w, router } = await montar('administrador')
     await w
       .findAll('button')
       .find((b) => b.text().includes('Cerrar sesión'))!
       .trigger('click')
     await flushPromises()
+    // Todavía no se cerró: solo se abrió el aviso de confirmación.
+    expect(sesionApi.logout).not.toHaveBeenCalled()
+    const dialogo = document.body.querySelector('[role="dialog"]')
+    expect(dialogo?.textContent).toContain('¿Seguro que quieres cerrar tu sesión?')
+    const confirmar = [...dialogo!.querySelectorAll('button')].find(
+      (b) => b.textContent?.includes('Cerrar sesión') && b.classList.contains('p-button-danger'),
+    )!
+    confirmar.click()
+    await flushPromises()
     expect(sesionApi.logout).toHaveBeenCalledOnce()
     expect(useSesionStore().autenticado).toBe(false)
     expect(router.currentRoute.value.path).toBe('/login')
+  })
+
+  it('Cancelar en el aviso no cierra la sesión', async () => {
+    const { w } = await montar('administrador')
+    await w
+      .findAll('button')
+      .find((b) => b.text().includes('Cerrar sesión'))!
+      .trigger('click')
+    await flushPromises()
+    const cancelar = [...document.body.querySelectorAll('[role="dialog"] button')].find((b) =>
+      b.textContent?.includes('Cancelar'),
+    ) as HTMLButtonElement
+    cancelar.click()
+    await flushPromises()
+    expect(sesionApi.logout).not.toHaveBeenCalled()
+    expect(useSesionStore().autenticado).toBe(true)
   })
 
   it('el menú se puede plegar a solo iconos, se recuerda y se puede volver a desplegar', async () => {

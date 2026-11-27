@@ -2,6 +2,7 @@
 import { computed, ref } from 'vue'
 import { RouterView, useRoute, useRouter } from 'vue-router'
 import Button from 'primevue/button'
+import Dialog from 'primevue/dialog'
 import AppMenu from './AppMenu.vue'
 import { useSesionStore } from '@/core/auth/sesion.store'
 
@@ -31,9 +32,18 @@ function alternarPlegado() {
 
 const iniciales = computed(() => (sesion.usuario?.nombreUsuario ?? '?').slice(0, 2).toUpperCase())
 
+const confirmarSalida = ref(false)
+const saliendo = ref(false)
+
 async function salir() {
-  await sesion.cerrar()
-  await router.replace('/login')
+  saliendo.value = true
+  try {
+    await sesion.cerrar()
+    await router.replace('/login')
+  } finally {
+    saliendo.value = false
+    confirmarSalida.value = false
+  }
 }
 </script>
 
@@ -83,11 +93,38 @@ async function salir() {
             severity="secondary"
             outlined
             size="small"
-            @click="salir"
+            @click="confirmarSalida = true"
           />
         </div>
       </header>
       <main class="app__principal"><RouterView /></main>
+      <Dialog
+        v-model:visible="confirmarSalida"
+        modal
+        header="Cerrar sesión"
+        :style="{ width: '22rem' }"
+        :closable="!saliendo"
+        :draggable="false"
+      >
+        <p class="app__salir-texto">¿Seguro que quieres cerrar tu sesión?</p>
+        <template #footer>
+          <Button
+            label="Cancelar"
+            severity="secondary"
+            text
+            :disabled="saliendo"
+            @click="confirmarSalida = false"
+          />
+          <Button
+            label="Cerrar sesión"
+            icon="pi pi-sign-out"
+            severity="danger"
+            :loading="saliendo"
+            autofocus
+            @click="salir"
+          />
+        </template>
+      </Dialog>
     </div>
   </div>
 </template>
@@ -177,6 +214,9 @@ async function salir() {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+.app__salir-texto {
+  margin: 0;
 }
 .app__usuario {
   display: flex;
