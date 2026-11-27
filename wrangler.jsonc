@@ -1,0 +1,18 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "community360-frontend",
+  "main": "worker/index.ts",
+  "compatibility_date": "2025-11-01",
+  "assets": {
+    "directory": "./dist",
+    // Las rutas de la aplicación (/dashboard, /login…) devuelven index.html.
+    "not_found_handling": "single-page-application",
+    // Solo estas rutas pasan por el Worker (proxy hacia el backend).
+    "run_worker_first": ["/api/*", "/ws"]
+  },
+  "vars": {
+    // Dirección pública del backend (no es un secreto). PROXY_SECRET sí es secreto: se agrega en el panel de Cloudflare.
+    "BACKEND_URL": "https://community360-backend.onrender.com"
+  },
+  "observability": { "enabled": true }
+}

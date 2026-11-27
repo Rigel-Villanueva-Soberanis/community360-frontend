@@ -1,5 +1,5 @@
 /**
- * Proxy de Cloudflare Pages hacia la API en Render.
+ * Proxy de Cloudflare (Worker) hacia la API en Render.
  *
  * El navegador solo habla con el sitio de Pages (mismo origen), así la cookie de sesión HttpOnly + SameSite=Strict
  * sigue funcionando aunque la API viva en otro dominio. Esta función reenvía /api/* y /ws a BACKEND_URL.
