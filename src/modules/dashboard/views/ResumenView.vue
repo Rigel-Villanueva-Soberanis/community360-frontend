@@ -10,7 +10,7 @@ const vivo = usarVivo()
 <template>
   <div v-if="vivo.snapshot.value" class="pagina">
     <IndicadoresResumen :resumen="vivo.snapshot.value.resumen" />
-    <div class="pagina__rejilla">
+    <div class="pagina__rejilla pagina__rejilla--ajustada">
       <ActividadHeatmap :celdas="vivo.snapshot.value.actividadPorHora" />
       <RegistroEventos :eventos="vivo.eventos.value" />
     </div>

@@ -119,8 +119,8 @@ const pasos = computed(() =>
   border-spacing: 2px;
   width: 100%;
   min-width: 30rem;
-  height: 100%;
-  max-height: 26rem; /* las celdas crecen con la pantalla, pero sin volverse columnas larguísimas */
+  max-width: 54rem; /* en pantallas muy grandes el mapa deja de crecer y se centra */
+  margin-inline: auto;
   table-layout: fixed;
 }
 .calor__col-dia {
@@ -141,12 +141,16 @@ const pasos = computed(() =>
   white-space: nowrap;
 }
 .calor__celda {
-  height: 1.5rem; /* mínimo: la tabla estira las filas para llenar la tarjeta */
-  border-radius: 5px;
+  border-radius: 6px;
   padding: 0;
   transition:
     transform 0.12s ease,
     box-shadow 0.12s ease;
+}
+.calor__celda::before {
+  content: '';
+  display: block;
+  padding-top: 100%; /* alto = ancho: cada celda es un cuadrado */
 }
 .calor__celda:hover {
   transform: scale(1.18);
@@ -166,7 +170,7 @@ const pasos = computed(() =>
 .calor__muestra {
   width: 1rem;
   height: 1rem;
-  border-radius: 5px;
+  border-radius: 4px;
   display: inline-block;
 }
 .visualmente-oculto {

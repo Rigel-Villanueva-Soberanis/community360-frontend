@@ -59,6 +59,12 @@ body {
 .pagina__rejilla > * {
   min-height: 0;
 }
+/* Resumen: la altura la manda el mapa de calor (celdas cuadradas) y la tarjeta de eventos se iguala a ella,
+   con scroll interno; así no sobra espacio vacío dentro de las tarjetas. */
+.pagina > .pagina__rejilla--ajustada {
+  flex: 0 0 auto;
+  grid-auto-rows: auto;
+}
 .pagina__cargando {
   color: var(--c360-texto-suave);
 }
