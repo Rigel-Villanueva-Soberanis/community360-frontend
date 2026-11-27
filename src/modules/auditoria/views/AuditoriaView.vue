@@ -33,8 +33,7 @@ const PESTANAS: {
     resumen: 'diario_cambios',
     icono: 'pi pi-sync',
     tema: 'indigo',
-    ayuda:
-      'Qué campos geográficos se quitaron por falta de consentimiento (no guarda el valor borrado).',
+    ayuda: 'Qué datos de ubicación se quitaron por falta de consentimiento.',
   },
   {
     clave: 'carga',
@@ -42,15 +41,15 @@ const PESTANAS: {
     resumen: 'bitacora_carga',
     icono: 'pi pi-cloud-upload',
     tema: 'cyan',
-    ayuda: 'Resumen de cada corrida del proceso de limpieza y carga (ETL).',
+    ayuda: 'Resumen de cada vez que se cargaron datos.',
   },
   {
     clave: 'api',
-    texto: 'Bitácora de la API',
+    texto: 'Movimientos',
     resumen: 'bitacora_api',
     icono: 'pi pi-code',
     tema: 'gris',
-    ayuda: 'Altas, modificaciones, bajas y rechazos de interacciones hechos por la API.',
+    ayuda: 'Altas, modificaciones, bajas y rechazos de interacciones hechos a mano.',
   },
 ]
 const conteo = (clave: string) => a.resumen.datos.value?.[clave]
@@ -59,7 +58,7 @@ const actual = computed(() => PESTANAS.find((p) => p.clave === a.coleccion.value
 
 <template>
   <div class="auditoria">
-    <section class="auditoria__resumen" aria-label="Documentos por colección">
+    <section class="auditoria__resumen" aria-label="Registros por sección">
       <TarjetaColeccion
         v-for="p in PESTANAS"
         :key="p.clave"
@@ -67,7 +66,7 @@ const actual = computed(() => PESTANAS.find((p) => p.clave === a.coleccion.value
         :valor="conteo(p.resumen) === undefined ? '—' : entero(conteo(p.resumen)!)"
         :icono="p.icono"
         :tema="p.tema"
-        detalle="documentos"
+        detalle="registros"
       />
     </section>
     <p v-if="a.resumen.error.value" class="auditoria__error" role="alert">
@@ -76,7 +75,7 @@ const actual = computed(() => PESTANAS.find((p) => p.clave === a.coleccion.value
     </p>
 
     <section class="auditoria__panel">
-      <div class="auditoria__pestanas" role="tablist" aria-label="Colección">
+      <div class="auditoria__pestanas" role="tablist" aria-label="Secciones">
         <button
           v-for="p in PESTANAS"
           :id="`tab-${p.clave}`"
@@ -136,8 +135,8 @@ const actual = computed(() => PESTANAS.find((p) => p.clave === a.coleccion.value
         </p>
         <PantallaVacia
           v-else-if="a.items.value.length === 0"
-          titulo="Sin documentos"
-          detalle="No hay documentos para este filtro."
+          titulo="Sin registros"
+          detalle="No hay registros para este filtro."
         />
         <template v-else>
           <TablaDocumentos
@@ -158,7 +157,7 @@ const actual = computed(() => PESTANAS.find((p) => p.clave === a.coleccion.value
             />
             <span
               >Página {{ a.pagina.value }} de {{ a.totalPaginas.value }} ·
-              {{ entero(a.lista.datos.value?.total ?? 0) }} documentos</span
+              {{ entero(a.lista.datos.value?.total ?? 0) }} registros</span
             >
             <Button
               icon="pi pi-angle-right"

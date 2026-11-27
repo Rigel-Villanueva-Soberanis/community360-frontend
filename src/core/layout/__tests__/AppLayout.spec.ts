@@ -24,13 +24,16 @@ async function montar(rol: string) {
         path: '/',
         component: AppLayout,
         children: [
-          { path: 'dashboard', component: vista, meta: { titulo: 'Dashboard' } },
+          { path: 'dashboard/resumen', component: vista, meta: { titulo: 'Resumen' } },
+          { path: 'dashboard/interacciones', component: vista, meta: { titulo: 'Interacciones' } },
+          { path: 'dashboard/usuarios', component: vista, meta: { titulo: 'Usuarios' } },
+          { path: 'dashboard/tendencia', component: vista, meta: { titulo: 'Tendencia' } },
           { path: 'auditoria', component: vista, meta: { titulo: 'Auditoría' } },
         ],
       },
     ],
   })
-  await router.push('/dashboard')
+  await router.push('/dashboard/resumen')
   const w = mount({ template: '<RouterView />' }, { global: { plugins: [router, PrimeVue] } })
   await flushPromises()
   return { w, router }
@@ -42,22 +45,27 @@ describe('AppLayout', () => {
     localStorage.clear()
   })
 
-  it('el administrador ve Dashboard y Auditoría', async () => {
+  it('el administrador ve las páginas del dashboard y Auditoría', async () => {
     const { w } = await montar('administrador')
     const textos = w.findAll('.menu__opcion').map((o) => o.text())
-    expect(textos).toEqual(['Dashboard', 'Auditoría'])
+    expect(textos).toEqual(['Resumen', 'Interacciones', 'Usuarios', 'Tendencia', 'Auditoría'])
   })
 
-  it('el analista solo ve Dashboard', async () => {
+  it('el analista solo ve las páginas del dashboard', async () => {
     const { w } = await montar('analista')
-    expect(w.findAll('.menu__opcion').map((o) => o.text())).toEqual(['Dashboard'])
+    expect(w.findAll('.menu__opcion').map((o) => o.text())).toEqual([
+      'Resumen',
+      'Interacciones',
+      'Usuarios',
+      'Tendencia',
+    ])
   })
 
   it('muestra usuario, rol y el título de la ruta', async () => {
     const { w } = await montar('analista')
     expect(w.text()).toContain('rigel')
     expect(w.text()).toContain('analista')
-    expect(w.find('.app__titulo').text()).toBe('Dashboard')
+    expect(w.find('.app__titulo').text()).toBe('Resumen')
   })
 
   it('Cerrar sesión llama a la API, limpia la sesión y va a /login', async () => {
@@ -89,10 +97,19 @@ describe('AppLayout', () => {
     expect(localStorage.getItem('c360.menuPlegado')).toBe('1')
     // plegado: cada opción sigue teniendo su nombre (para lectores de pantalla y para el tooltip)
     expect(w.findAll('.menu__opcion').map((o) => o.attributes('title'))).toEqual([
-      'Dashboard',
+      'Resumen',
+      'Interacciones',
+      'Usuarios',
+      'Tendencia',
       'Auditoría',
     ])
-    expect(w.findAll('.menu__opcion').map((o) => o.text())).toEqual(['Dashboard', 'Auditoría'])
+    expect(w.findAll('.menu__opcion').map((o) => o.text())).toEqual([
+      'Resumen',
+      'Interacciones',
+      'Usuarios',
+      'Tendencia',
+      'Auditoría',
+    ])
 
     await boton().trigger('click')
     expect(w.find('.app').classes()).not.toContain('app--plegado')
@@ -103,5 +120,24 @@ describe('AppLayout', () => {
     localStorage.setItem('c360.menuPlegado', '1')
     const { w } = await montar('analista')
     expect(w.find('.app').classes()).toContain('app--plegado')
+  })
+
+  it('el menú agrupa las opciones: «Dashboard» arriba y «Administración» para el administrador', async () => {
+    const { w } = await montar('administrador')
+    expect(w.findAll('.menu__grupo-texto').map((g) => g.text())).toEqual([
+      'Dashboard',
+      'Administración',
+    ])
+    const { w: w2 } = await montar('analista')
+    expect(w2.findAll('.menu__grupo-texto').map((g) => g.text())).toEqual(['Dashboard'])
+  })
+
+  it('la opción de la página actual queda marcada', async () => {
+    const { w, router } = await montar('administrador')
+    expect(w.find('.menu__opcion--activa').text()).toBe('Resumen')
+    await router.push('/dashboard/usuarios')
+    await flushPromises()
+    expect(w.find('.menu__opcion--activa').text()).toBe('Usuarios')
+    expect(w.find('.app__titulo').text()).toBe('Usuarios')
   })
 })

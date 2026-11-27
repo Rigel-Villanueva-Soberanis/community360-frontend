@@ -10,7 +10,7 @@ defineProps<{ items: PuntoSerie[] }>()
   <TarjetaGrafica
     titulo="Etiquetas más usadas"
     subtitulo="En vivo · top 10"
-    definicion="I9 · fₑ = COUNT(etiqueta e en las interacciones). Se muestran las 10 etiquetas con mayor frecuencia."
+    definicion="Las 10 etiquetas que más se repiten en las interacciones."
     :vacio="items.length === 0"
     mensaje-vacio="Todavía no hay etiquetas."
   >

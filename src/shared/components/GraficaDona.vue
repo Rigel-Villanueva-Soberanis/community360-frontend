@@ -79,21 +79,28 @@ const filas = computed(() =>
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
+  flex: 1 1 auto;
+  min-height: 0;
 }
 .dona__fila {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
+  align-content: center;
   gap: 1rem;
+  flex: 1 1 auto;
 }
 .dona__lienzo {
   position: relative;
-  width: 11rem;
-  height: 11rem;
+  /* el círculo crece con el alto de la pantalla */
+  width: clamp(11rem, 24vh, 17rem);
+  height: clamp(11rem, 24vh, 17rem);
   flex: none;
   margin: 0 auto;
 }
-.dona__chart {
+.dona__lienzo > .dona__chart {
+  position: absolute !important; /* PrimeVue fuerza "relative" en línea; así la gráfica no empuja la altura de su tarjeta */
+  inset: 0;
   width: 100%;
   height: 100%;
 }

@@ -24,26 +24,26 @@ const lectura = computed(() => {
       titulo="Total de interacciones"
       :valor="entero(r.totalInteracciones)"
       :clave="r.totalInteracciones"
-      definicion="I1 · N = COUNT(interacciones almacenadas). Si no hay interacciones, N = 0."
+      definicion="Cantidad total de interacciones guardadas. Si no hay ninguna, vale 0."
     />
     <KpiTarjeta
       titulo="Sentimiento promedio"
       :valor="sentimiento"
       :clave="r.sentimientoPromedio"
       :detalle="`${lectura} · escala de −1 a 1`"
-      definicion="I2 · S̄ = (Σ sᵢ) / N, donde sᵢ es el sentimiento de la interacción i (de −1 a 1). Con N = 0 vale 0."
+      definicion="Promedio del sentimiento de todas las interacciones (de −1 a 1). Si no hay interacciones, vale 0."
     />
     <KpiTarjeta
       titulo="Reacciones por interacción"
       :valor="decimal(r.reaccionesPromedio, 2)"
       :clave="r.reaccionesPromedio"
-      definicion="I3 · R̄ = (Σ rᵢ) / N, donde rᵢ son las reacciones recibidas por la interacción i. Con N = 0 vale 0."
+      definicion="Promedio de reacciones que recibe cada interacción. Si no hay interacciones, vale 0."
     />
     <KpiTarjeta
       titulo="Interacciones negativas"
       :valor="porcentaje(r.porcentajeNegativo)"
       :clave="r.porcentajeNegativo"
-      definicion="I4 · 100 · COUNT(sᵢ < 0) / N: porcentaje de interacciones con sentimiento menor que cero. Con N = 0 vale 0."
+      definicion="Porcentaje de interacciones con sentimiento menor que cero. Si no hay interacciones, vale 0."
     />
   </div>
 </template>

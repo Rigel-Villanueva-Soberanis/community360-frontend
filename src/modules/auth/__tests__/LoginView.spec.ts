@@ -148,7 +148,9 @@ describe('LoginView', () => {
     vi.mocked(authApi.login).mockRejectedValue(new AxiosError('Network Error', 'ERR_NETWORK'))
     const { w } = await montar()
     await escribir(w, 'admin', 'x')
-    expect(w.text()).toContain('No se pudo conectar con el servidor.')
+    expect(w.text()).toContain(
+      'No se pudo iniciar sesión. Revisa tu conexión e inténtalo de nuevo.',
+    )
   })
 
   it('si el navegador no guardó la cookie (/me da 401) no entra', async () => {

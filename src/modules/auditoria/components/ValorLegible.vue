@@ -44,7 +44,9 @@ const campos = computed(() => (esObjeto(props.valor) ? Object.entries(props.valo
 
 <template>
   <span v-if="tipo === 'vacio'" class="vacio">—</span>
-  <span v-else-if="tipo === 'simple'" :title="textoCelda(valor)">{{ formatearValor(valor) }}</span>
+  <span v-else-if="tipo === 'simple'" :title="formatearValor(valor)">{{
+    formatearValor(valor)
+  }}</span>
   <span v-else-if="tipo === 'plano'">{{ textoCelda(valor) }}</span>
 
   <ul v-else-if="tipo === 'etiquetas'" class="chips">

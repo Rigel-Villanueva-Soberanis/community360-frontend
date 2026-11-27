@@ -83,6 +83,8 @@ const ejeCategoria = computed(() => ({
   grid: { display: false },
   ticks: {
     color: '#334155',
+    // En horizontales cada barra lleva su nombre: nunca se omite una etiqueta por falta de espacio.
+    autoSkip: !props.horizontal,
     font: { weight: 600 as const, size: props.horizontal ? 11 : 12 },
     callback(this: { getLabelForValue(v: number): string }, valor: string | number) {
       const t = this.getLabelForValue(Number(valor))
@@ -128,7 +130,7 @@ const filas = computed(() =>
 
 <template>
   <div class="barras">
-    <div class="barras__lienzo" :style="{ height: alto }" role="img" :aria-label="descripcion">
+    <div class="barras__lienzo" :style="{ minHeight: alto }" role="img" :aria-label="descripcion">
       <Chart
         type="bar"
         :data="datos"
@@ -146,12 +148,17 @@ const filas = computed(() =>
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
+  flex: 1 1 auto;
+  min-height: 0;
 }
 .barras__lienzo {
   position: relative;
   width: 100%;
+  flex: 1 1 auto;
 }
-.barras__chart {
+.barras__lienzo > .barras__chart {
+  position: absolute !important; /* PrimeVue fuerza "relative" en línea; así la gráfica no empuja la altura de su tarjeta */
+  inset: 0;
   width: 100%;
   height: 100%;
 }

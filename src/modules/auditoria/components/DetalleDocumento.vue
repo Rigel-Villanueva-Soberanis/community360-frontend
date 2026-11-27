@@ -34,11 +34,13 @@ const primero = (claves: string[]) =>
 const claveId = computed(() => primero(['id_interaccion', 'id', 'carga_id']))
 const claveEstado = computed(() => primero(['estado_revision', 'operacion']))
 const hayUsuario = computed(() => primero(['id_usuario']) !== undefined)
-const motivo = computed(() => texto(props.documento?.motivo))
+const motivo = computed(() => formatearValor(texto(props.documento?.motivo)).replace(/^—$/, ''))
 const mensaje = computed(() => texto(props.documento?.texto))
 const carga = computed(() => (claveId.value === 'carga_id' ? '' : texto(props.documento?.carga_id)))
 
-const identificador = computed(() => (claveId.value ? texto(props.documento?.[claveId.value]) : ''))
+const identificador = computed(() =>
+  claveId.value ? formatearValor(texto(props.documento?.[claveId.value])) : '',
+)
 const titulo = computed(() => props.etiqueta)
 
 const USADOS = new Set([
@@ -184,7 +186,8 @@ async function copiarCarga() {
       <!-- Carga -->
       <div v-if="carga" class="detalle__carga">
         <span class="detalle__carga-texto"
-          ><strong>Carga:</strong> <span class="detalle__mono">{{ carga }}</span></span
+          ><strong>Carga:</strong>
+          <span class="detalle__mono">{{ formatearValor(carga) }}</span></span
         >
         <Button
           :icon="copiado ? 'pi pi-check' : 'pi pi-copy'"

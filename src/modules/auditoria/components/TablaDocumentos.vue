@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import Button from 'primevue/button'
-import { etiquetaCampo, formatearValor, textoCelda, tonoEstado } from '../composables/useAuditoria'
+import { etiquetaCampo, formatearValor, tonoEstado } from '../composables/useAuditoria'
 import DetalleDocumento from './DetalleDocumento.vue'
 import type { Documento } from '../types/auditoria.types'
 
@@ -38,7 +38,7 @@ const forma = (c: string, v: unknown): Forma =>
 /** Nombre de la fila del documento para el lector de pantalla. */
 const identificador = (doc: Documento) => {
   const clave = ['id_interaccion', 'id', 'carga_id', 'id_usuario'].find((c) => doc[c])
-  return clave ? textoCelda(doc[clave]) : ''
+  return clave ? formatearValor(doc[clave]) : ''
 }
 </script>
 
@@ -60,7 +60,7 @@ const identificador = (doc: Documento) => {
             <td
               v-for="(c, n) in columnas"
               :key="c"
-              :title="textoCelda(doc[c])"
+              :title="formatearValor(doc[c])"
               :class="{ tabla__sec: n >= 2 }"
             >
               <span v-if="forma(c, doc[c]) === 'id'" class="chip chip--id">{{
@@ -85,7 +85,7 @@ const identificador = (doc: Documento) => {
                 size="small"
                 severity="secondary"
                 aria-haspopup="dialog"
-                :aria-label="`Ver más del documento ${identificador(doc) || i + 1}`"
+                :aria-label="`Ver más del registro ${identificador(doc) || i + 1}`"
                 @click="seleccionado = doc"
               />
             </td>

@@ -51,7 +51,7 @@ export function camposOrdenados(doc: Documento): string[] {
 }
 
 const ETIQUETAS: Record<string, string> = {
-  id: 'ID',
+  id: 'Código',
   id_interaccion: 'Interacción',
   id_usuario: 'Usuario',
   id_ciudad: 'Ciudad',
@@ -64,7 +64,7 @@ const ETIQUETAS: Record<string, string> = {
   carga_id: 'Carga',
   hecho_por: 'Hecho por',
   fecha: 'Fecha',
-  fecha_utc: 'Fecha (UTC)',
+  fecha_utc: 'Fecha',
   fecha_hora: 'Fecha y hora',
   aislado_en: 'Aislado el',
   inicio: 'Inicio',
@@ -120,7 +120,22 @@ export function formatearValor(valor: unknown): string {
     const f = new Date(valor)
     if (!Number.isNaN(f.getTime())) return formatoFecha.format(f)
   }
+  if (typeof valor === 'string' && valor !== '') return limpiarTexto(valor)
   return textoCelda(valor)
+}
+
+/** Motivos que escribe el proceso de carga, dichos en lenguaje de todos los días. */
+const MOTIVOS: Record<string, string> = {
+  'id_usuario sin usuario en el dataset': 'El usuario no existe',
+  'consentimiento_datos = no': 'El usuario no dio su consentimiento',
+  'usuario sin consentimiento': 'El usuario no dio su consentimiento',
+}
+const PALABRAS: Record<string, string> = { modificacion: 'modificación' }
+
+/** Texto para personas: sin guiones bajos ni nombres internos («arte_comisiones» → «arte comisiones»). */
+export function limpiarTexto(texto: string): string {
+  const k = texto.trim().toLowerCase()
+  return MOTIVOS[k] ?? PALABRAS[k] ?? texto.replace(/_/g, ' ')
 }
 
 /** Lo que se muestra en una celda: siempre texto (nunca HTML). */

@@ -11,7 +11,7 @@ const props = defineProps<{ recurso: ReturnType<typeof useRecurso<PuntoSerie[]>>
   <TarjetaGrafica
     titulo="Usuarios por rango de edad"
     subtitulo="Histórico"
-    definicion="Conteo de usuarios por rango de edad: COUNT(usuario) agrupado por rango (18-24, 25-31, 32-38 y 39+)."
+    definicion="Cantidad de usuarios por rango de edad (18-24, 25-31, 32-38 y 39+)."
     :cargando="props.recurso.cargando.value"
     :error="props.recurso.error.value"
     :vacio="(props.recurso.datos.value?.length ?? 0) === 0"

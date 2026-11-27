@@ -22,7 +22,7 @@ describe('MapaCalor', () => {
     expect(w.findAll('td.calor__celda')).toHaveLength(7 * 24)
     expect(w.find('table').attributes('aria-label')).toContain('Total: 4')
     const lunes9 = w.findAll('tbody tr')[0]!.findAll('td')[9]!
-    expect(lunes9.attributes('title')).toContain('lunes 09:00 UTC: 3')
+    expect(lunes9.attributes('title')).toContain('lunes 09:00: 3')
   })
   it('la celda más alta usa el tono más oscuro y las vacías un gris neutro', () => {
     const w = mount(MapaCalor, {

@@ -11,7 +11,7 @@ const props = defineProps<{ recurso: ReturnType<typeof useRecurso<PuntoSerie[]>>
   <TarjetaGrafica
     titulo="Usuarios por país"
     subtitulo="Histórico · solo usuarios con consentimiento"
-    definicion="Conteo de usuarios por país, contando únicamente a quienes dieron consentimiento de datos geográficos (consentimiento = “sí”). Quienes no lo dieron nunca aparecen en esta gráfica."
+    definicion="Cantidad de usuarios por país, solo de quienes dieron su consentimiento para usar su ubicación. Quienes no lo dieron nunca aparecen en esta gráfica."
     :cargando="props.recurso.cargando.value"
     :error="props.recurso.error.value"
     :vacio="(props.recurso.datos.value?.length ?? 0) === 0"

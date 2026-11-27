@@ -13,7 +13,7 @@ const color = (e: string) => COLOR_ESTATUS[e.trim().toLowerCase()] ?? COLOR_OTRO
   <TarjetaGrafica
     titulo="Usuarios por estatus"
     subtitulo="Histórico · todos los usuarios"
-    definicion="Porcentaje de usuarios por estatus: 100 · uₑ / U, donde uₑ son los usuarios con ese estatus y U el total de usuarios. Los porcentajes se redondean a 1 decimal con el método del mayor residuo para que sumen exactamente 100.0."
+    definicion="Porcentaje de usuarios según su estatus. Los porcentajes llevan 1 decimal y suman exactamente 100."
     :cargando="props.recurso.cargando.value"
     :error="props.recurso.error.value"
     :vacio="(props.recurso.datos.value?.length ?? 0) === 0"

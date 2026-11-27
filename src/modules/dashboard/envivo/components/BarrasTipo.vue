@@ -10,7 +10,7 @@ defineProps<{ items: PuntoSerie[] }>()
   <TarjetaGrafica
     titulo="Interacciones por tipo"
     subtitulo="En vivo · conteo"
-    definicion="I6 · nₜ = COUNT(interacciones del tipo t). La suma de todos los tipos es igual al total N."
+    definicion="Cantidad de interacciones de cada tipo. La suma de todos los tipos es igual al total."
     :vacio="items.length === 0"
     mensaje-vacio="Todavía no hay interacciones."
   >

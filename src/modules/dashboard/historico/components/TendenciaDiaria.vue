@@ -26,8 +26,8 @@ const sentimientos = computed(() => t.dias.value.map((d) => d.sentimiento))
     />
     <TarjetaGrafica
       titulo="Tendencia diaria"
-      subtitulo="Histórico · fechas en UTC"
-      definicion="Para cada día d del rango: nᵈ = COUNT(interacciones del día) y S̄ᵈ = (Σ sentimiento del día) / nᵈ. El rango incluye el día final y abarca como máximo 366 días. Son dos gráficas separadas porque las dos medidas tienen escalas distintas."
+      subtitulo="Histórico · por día"
+      definicion="Para cada día del rango: cuántas interacciones hubo y el sentimiento promedio de ese día. El rango incluye el día final y abarca como máximo 366 días. Son dos gráficas porque las dos medidas tienen escalas distintas."
       :cargando="t.cargando.value"
       :error="t.error.value"
       :vacio="etiquetas.length === 0"
@@ -42,6 +42,7 @@ const sentimientos = computed(() => t.dias.value.map((d) => d.sentimiento))
             :valores="totales"
             medida="Interacciones"
             :color="CATEGORICA[0]"
+            alto="14rem"
             descripcion="Gráfica de líneas: cantidad de interacciones por día"
           />
         </div>
@@ -52,6 +53,7 @@ const sentimientos = computed(() => t.dias.value.map((d) => d.sentimiento))
             :valores="sentimientos"
             medida="Sentimiento promedio"
             :color="CATEGORICA[1]"
+            alto="14rem"
             :min="-1"
             :max="1"
             :decimales="2"
@@ -69,10 +71,25 @@ const sentimientos = computed(() => t.dias.value.map((d) => d.sentimiento))
   flex-direction: column;
   gap: 0.75rem;
 }
+.tendencia > :deep(.tarjeta) {
+  flex: 1 1 auto;
+}
 .tendencia__graficas {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 1.25rem;
+  flex: 1 1 auto;
+  min-height: 0;
+}
+.tendencia__graficas > div {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+@media (max-width: 899px) {
+  .tendencia__graficas {
+    grid-template-columns: minmax(0, 1fr);
+  }
 }
 .tendencia__graficas h4 {
   margin: 0 0 0.5rem;

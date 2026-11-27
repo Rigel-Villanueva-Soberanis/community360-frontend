@@ -10,7 +10,7 @@ defineProps<{ items: PuntoSerie[] }>()
   <TarjetaGrafica
     titulo="Participación por plataforma"
     subtitulo="En vivo · interacciones"
-    definicion="I5 · 100 · nₖ / N, donde nₖ son las interacciones de la plataforma k y N el total. Los porcentajes llevan 1 decimal y, con el método del mayor residuo, suman exactamente 100.0."
+    definicion="Porcentaje de las interacciones que corresponde a cada plataforma. Los porcentajes llevan 1 decimal y suman exactamente 100."
     :vacio="items.length === 0"
     mensaje-vacio="Todavía no hay interacciones."
   >

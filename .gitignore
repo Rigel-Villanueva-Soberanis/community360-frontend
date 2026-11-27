@@ -50,3 +50,12 @@ __screenshots__/
 
 # Documentación y guías (no se suben)
 *.md
+
+# Refuerzo: certificados, llaves y carpetas de Cloudflare
+*.pem
+*.key
+*.crt
+*.cer
+*.p12
+.wrangler
+secrets.*.json

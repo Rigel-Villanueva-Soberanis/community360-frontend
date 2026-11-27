@@ -179,7 +179,7 @@ describe('AuditoriaView', () => {
     await flushPromises()
     expect(w.find('img').exists()).toBe(false)
     expect(w.text()).toContain('<img src=x onerror=alert(1)>')
-    await w.find('button[aria-label^="Ver más del documento"]').trigger('click')
+    await w.find('button[aria-label^="Ver más del registro"]').trigger('click')
     await flushPromises()
     expect(modal()?.textContent).toContain('<img src=x onerror=alert(1)>')
     expect(document.body.querySelector('[role=dialog] img')).toBeNull()
@@ -204,6 +204,33 @@ describe('AuditoriaView', () => {
     w.unmount()
   })
 
+  it('no muestra guiones bajos ni palabras internas: todo se ve en lenguaje normal', async () => {
+    vi.mocked(auditoriaApi.cuarentena).mockResolvedValue(
+      pagina([
+        {
+          id_interaccion: 'I1',
+          id_usuario: 'U1',
+          motivo: 'id_usuario sin usuario en el dataset',
+          estado_revision: 'pendiente',
+          tema: 'arte_comisiones',
+          carga_id: 'carga_20261121_07caa6',
+        },
+      ]),
+    )
+    const w = montar()
+    await flushPromises()
+    expect(w.text()).toContain('El usuario no existe')
+    expect(w.text()).not.toContain('dataset')
+    await w.find('button[aria-label^="Ver más del registro"]').trigger('click')
+    await flushPromises()
+    const texto = modal()?.textContent ?? ''
+    expect(texto).toContain('arte comisiones')
+    expect(texto).toContain('carga 20261121 07caa6')
+    expect(texto).not.toContain('_')
+    expect(w.text()).not.toContain('_')
+    w.unmount()
+  })
+
   it('la pestaña activa muestra cuántos documentos tiene', async () => {
     const w = montar()
     await flushPromises()
@@ -217,7 +244,7 @@ describe('AuditoriaView', () => {
     await flushPromises()
     await w.find('#tab-diario').trigger('click')
     await flushPromises()
-    await w.find('button[aria-label^="Ver más del documento U1"]').trigger('click')
+    await w.find('button[aria-label^="Ver más del registro U1"]').trigger('click')
     await flushPromises()
     const chips = [...document.body.querySelectorAll('[role=dialog] .chips li')].map(
       (l) => l.textContent,
@@ -250,7 +277,7 @@ describe('AuditoriaView', () => {
     expect(encabezados.join()).not.toContain('_') // nombres legibles, no nombres de campo
     expect(modal()).toBeNull()
 
-    await w.find('button[aria-label^="Ver más del documento I7"]').trigger('click')
+    await w.find('button[aria-label^="Ver más del registro I7"]').trigger('click')
     await flushPromises()
     const texto = modal()?.textContent ?? ''
     for (const campo of ['Hecho por', 'Carga', 'Registro original', 'U9999', 'Arte', 'Aviso'])

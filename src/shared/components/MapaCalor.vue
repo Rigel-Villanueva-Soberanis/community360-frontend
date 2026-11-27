@@ -54,7 +54,7 @@ const pasos = computed(() =>
     <div class="calor__scroll">
       <table
         class="calor__tabla"
-        :aria-label="`Mapa de calor de actividad por día y hora (UTC). Total: ${total} interacciones.`"
+        :aria-label="`Mapa de calor de actividad por día y hora. Total: ${total} interacciones.`"
       >
         <colgroup>
           <col class="calor__col-dia" />
@@ -77,7 +77,7 @@ const pasos = computed(() =>
               :key="h"
               class="calor__celda"
               :style="{ background: color(valor(d.dia, h)) }"
-              :title="`${d.largo} ${hora2(h)}:00 UTC: ${entero(valor(d.dia, h))} interacciones`"
+              :title="`${d.largo} ${hora2(h)}:00: ${entero(valor(d.dia, h))} interacciones`"
             >
               <span class="visualmente-oculto">{{ valor(d.dia, h) }}</span>
             </td>
@@ -101,7 +101,16 @@ const pasos = computed(() =>
 </template>
 
 <style scoped>
+.calor {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+}
 .calor__scroll {
+  flex: 1 1 auto;
+  display: flex;
+  align-items: center;
   position: relative; /* contiene los textos ocultos (absolute) para que no ensanchen la página */
   overflow-x: auto;
 }
@@ -110,6 +119,8 @@ const pasos = computed(() =>
   border-spacing: 2px;
   width: 100%;
   min-width: 30rem;
+  height: 100%;
+  max-height: 26rem; /* las celdas crecen con la pantalla, pero sin volverse columnas larguísimas */
   table-layout: fixed;
 }
 .calor__col-dia {
@@ -130,7 +141,7 @@ const pasos = computed(() =>
   white-space: nowrap;
 }
 .calor__celda {
-  height: 1.5rem;
+  height: 1.5rem; /* mínimo: la tabla estira las filas para llenar la tarjeta */
   border-radius: 5px;
   padding: 0;
   transition:

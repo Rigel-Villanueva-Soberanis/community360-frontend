@@ -24,9 +24,9 @@ const TEXTO = {
 <template>
   <TarjetaGrafica
     titulo="Últimos eventos"
-    subtitulo="Llegan por WebSocket · sin texto ni ubicación"
+    subtitulo="Se actualiza al instante · sin texto ni ubicación"
     :vacio="eventos.length === 0"
-    mensaje-vacio="Esperando cambios… envía una interacción desde Postman."
+    mensaje-vacio="Esperando cambios…"
   >
     <ol class="eventos" aria-live="polite">
       <li
@@ -57,7 +57,9 @@ const TEXTO = {
   display: flex;
   flex-direction: column;
   gap: 0.4rem;
-  max-height: 22rem;
+  flex: 1 1 0;
+  min-height: 8rem;
+  overflow-y: auto;
   overflow: auto;
 }
 .eventos__item {

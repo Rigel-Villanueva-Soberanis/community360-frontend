@@ -20,21 +20,25 @@ describe('rutas protegidas de la aplicación', () => {
     vi.clearAllMocks()
   })
 
-  it.each(['/', '/dashboard', '/auditoria', '/sin-permiso', '/cualquier-cosa'])(
-    'sin sesión, %s lleva a /login',
-    async (ruta) => {
-      vi.mocked(sesionApi.me).mockRejectedValue(new Error('401'))
-      const r = nuevo()
-      await r.push(ruta)
-      expect(r.currentRoute.value.path).toBe('/login')
-    },
-  )
+  it.each([
+    '/',
+    '/dashboard',
+    '/dashboard/usuarios',
+    '/auditoria',
+    '/sin-permiso',
+    '/cualquier-cosa',
+  ])('sin sesión, %s lleva a /login', async (ruta) => {
+    vi.mocked(sesionApi.me).mockRejectedValue(new Error('401'))
+    const r = nuevo()
+    await r.push(ruta)
+    expect(r.currentRoute.value.path).toBe('/login')
+  })
 
   it('/ redirige al dashboard cuando hay sesión', async () => {
     vi.mocked(sesionApi.me).mockResolvedValue({ id: 2, nombreUsuario: 'ana', rol: 'analista' })
     const r = nuevo()
     await r.push('/')
-    expect(r.currentRoute.value.path).toBe('/dashboard')
+    expect(r.currentRoute.value.path).toBe('/dashboard/resumen')
   })
 
   it('analista: /auditoria → /sin-permiso', async () => {
@@ -64,5 +68,22 @@ describe('rutas protegidas de la aplicación', () => {
     const r = nuevo()
     await r.push('/no-existe')
     expect(r.currentRoute.value.meta.titulo).toBe('No encontrado')
+  })
+
+  it.each(['resumen', 'interacciones', 'usuarios', 'tendencia'])(
+    'analista: /dashboard/%s se puede abrir',
+    async (pagina) => {
+      vi.mocked(sesionApi.me).mockResolvedValue({ id: 2, nombreUsuario: 'ana', rol: 'analista' })
+      const r = nuevo()
+      await r.push(`/dashboard/${pagina}`)
+      expect(r.currentRoute.value.path).toBe(`/dashboard/${pagina}`)
+    },
+  )
+
+  it('/dashboard lleva a la página Resumen', async () => {
+    vi.mocked(sesionApi.me).mockResolvedValue({ id: 2, nombreUsuario: 'ana', rol: 'analista' })
+    const r = nuevo()
+    await r.push('/dashboard')
+    expect(r.currentRoute.value.path).toBe('/dashboard/resumen')
   })
 })

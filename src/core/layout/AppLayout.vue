@@ -69,6 +69,8 @@ async function salir() {
           @click="alternarPlegado"
         />
         <h1 class="app__titulo">{{ route.meta.titulo }}</h1>
+        <!-- aquí aparece el aviso "En vivo" de las páginas que lo necesitan -->
+        <div id="c360-estado-encabezado" class="app__estado" />
         <div class="app__usuario">
           <span class="app__avatar" aria-hidden="true">{{ iniciales }}</span>
           <span class="app__nombre"

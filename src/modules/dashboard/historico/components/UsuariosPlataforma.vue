@@ -11,7 +11,7 @@ const props = defineProps<{ recurso: ReturnType<typeof useRecurso<PuntoSerie[]>>
   <TarjetaGrafica
     titulo="Usuarios por plataforma"
     subtitulo="Histórico · plataforma principal"
-    definicion="Conteo de usuarios por su plataforma principal: COUNT(usuario) agrupado por plataforma."
+    definicion="Cantidad de usuarios según su plataforma principal."
     :cargando="props.recurso.cargando.value"
     :error="props.recurso.error.value"
     :vacio="(props.recurso.datos.value?.length ?? 0) === 0"

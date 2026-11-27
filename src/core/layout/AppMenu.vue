@@ -8,22 +8,30 @@ defineProps<{ compacto?: boolean }>()
 const emit = defineEmits<{ navegar: [] }>()
 const { puede } = usePermisos()
 const opciones = computed(() => MENU.filter((o) => puede(o.permiso)))
+/** Nombre del grupo solo en la primera opción de cada grupo. */
+const encabezado = (i: number) =>
+  opciones.value[i]?.grupo && opciones.value[i]?.grupo !== opciones.value[i - 1]?.grupo
+    ? opciones.value[i]?.grupo
+    : ''
 </script>
 
 <template>
   <nav class="menu" :class="{ 'menu--compacto': compacto }" aria-label="Menú principal">
-    <RouterLink
-      v-for="o in opciones"
-      :key="o.ruta"
-      :to="o.ruta"
-      class="menu__opcion"
-      active-class="menu__opcion--activa"
-      :title="compacto ? o.texto : undefined"
-      @click="emit('navegar')"
-    >
-      <i :class="o.icono" aria-hidden="true" />
-      <span class="menu__texto">{{ o.texto }}</span>
-    </RouterLink>
+    <template v-for="(o, i) in opciones" :key="o.ruta">
+      <p v-if="encabezado(i)" class="menu__grupo" :class="{ 'menu__grupo--primero': i === 0 }">
+        <span class="menu__grupo-texto">{{ encabezado(i) }}</span>
+      </p>
+      <RouterLink
+        :to="o.ruta"
+        class="menu__opcion"
+        active-class="menu__opcion--activa"
+        :title="compacto ? o.texto : undefined"
+        @click="emit('navegar')"
+      >
+        <i :class="o.icono" aria-hidden="true" />
+        <span class="menu__texto">{{ o.texto }}</span>
+      </RouterLink>
+    </template>
   </nav>
 </template>
 
@@ -33,6 +41,17 @@ const opciones = computed(() => MENU.filter((o) => puede(o.permiso)))
   flex-direction: column;
   gap: 0.35rem;
   padding: 0.85rem;
+}
+.menu__grupo {
+  margin: 0.9rem 0.9rem 0.2rem;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #94a3b8;
+}
+.menu__grupo--primero {
+  margin-top: 0.2rem;
 }
 .menu__opcion {
   display: flex;
@@ -82,6 +101,23 @@ const opciones = computed(() => MENU.filter((o) => puede(o.permiso)))
 @media (min-width: 900px) {
   .menu--compacto {
     align-items: center;
+  }
+  /* Plegado: el nombre del grupo se vuelve una línea fina de separación */
+  .menu--compacto .menu__grupo {
+    width: 1.6rem;
+    height: 1px;
+    margin: 0.6rem 0;
+    background: #e2e8f0;
+  }
+  .menu--compacto .menu__grupo--primero {
+    display: none;
+  }
+  .menu--compacto .menu__grupo-texto {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
   }
   .menu--compacto .menu__opcion {
     justify-content: center;

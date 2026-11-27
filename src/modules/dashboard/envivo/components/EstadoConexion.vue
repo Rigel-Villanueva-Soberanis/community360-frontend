@@ -10,11 +10,11 @@ const info = computed(() => {
     case 'en_vivo':
       return { texto: 'En vivo', clase: 'ok', icono: 'pi pi-circle-fill' }
     case 'conectando':
-      return { texto: 'Conectando…', clase: 'espera', icono: 'pi pi-spin pi-spinner' }
+      return { texto: 'Cargando…', clase: 'espera', icono: 'pi pi-spin pi-spinner' }
     case 'reconectando':
-      return { texto: 'Reconectando…', clase: 'espera', icono: 'pi pi-spin pi-spinner' }
+      return { texto: 'Actualizando…', clase: 'espera', icono: 'pi pi-spin pi-spinner' }
     default:
-      return { texto: 'Desconectado', clase: 'error', icono: 'pi pi-times-circle' }
+      return { texto: 'Sin actualización en vivo', clase: 'error', icono: 'pi pi-times-circle' }
   }
 })
 </script>
@@ -23,7 +23,7 @@ const info = computed(() => {
   <p class="estado" :class="`estado--${info.clase}`" role="status">
     <i :class="info.icono" aria-hidden="true" />
     <strong>{{ info.texto }}</strong>
-    <small v-if="ultimoMensajeUtc">último mensaje {{ formatearHora(ultimoMensajeUtc) }}</small>
+    <small v-if="ultimoMensajeUtc">actualizado {{ formatearHora(ultimoMensajeUtc) }}</small>
   </p>
 </template>
 

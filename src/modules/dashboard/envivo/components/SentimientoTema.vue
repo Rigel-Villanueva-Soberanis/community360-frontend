@@ -20,7 +20,7 @@ const minimo = computed(() => {
   <TarjetaGrafica
     titulo="Sentimiento por tema"
     subtitulo="En vivo · promedio de −1 a 1"
-    definicion="I8 · para cada tema m: (Σ sᵢ de las interacciones del tema m) / nₘ. Valores positivos indican un tono favorable y negativos uno desfavorable."
+    definicion="Promedio del sentimiento de las interacciones de cada tema. Los valores positivos indican un tono favorable y los negativos, uno desfavorable."
     :vacio="items.length === 0"
     mensaje-vacio="Todavía no hay interacciones."
   >

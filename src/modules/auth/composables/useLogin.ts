@@ -56,7 +56,8 @@ export function useLogin() {
       else if (estado === 422 || estado === 400) {
         errores.value = erroresDe(error)
         mensaje.value = 'Revisa los datos ingresados.'
-      } else if (estado === undefined) mensaje.value = 'No se pudo conectar con el servidor.'
+      } else if (estado === undefined)
+        mensaje.value = 'No se pudo iniciar sesión. Revisa tu conexión e inténtalo de nuevo.'
       else mensaje.value = 'No se pudo iniciar sesión. Inténtalo más tarde.'
     } finally {
       cargando.value = false

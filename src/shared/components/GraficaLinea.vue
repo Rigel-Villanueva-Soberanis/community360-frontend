@@ -97,7 +97,7 @@ const filas = computed(() => props.etiquetas.map((e, i) => [e, formato(props.val
 
 <template>
   <div class="linea">
-    <div class="linea__lienzo" :style="{ height: alto }" role="img" :aria-label="descripcion">
+    <div class="linea__lienzo" :style="{ minHeight: alto }" role="img" :aria-label="descripcion">
       <Chart type="line" :data="datos" :options="opciones" class="linea__chart" />
     </div>
     <TablaAlterna :columnas="['Fecha', medida]" :filas="filas" />
@@ -109,12 +109,17 @@ const filas = computed(() => props.etiquetas.map((e, i) => [e, formato(props.val
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
+  flex: 1 1 auto;
+  min-height: 0;
 }
 .linea__lienzo {
   position: relative;
   width: 100%;
+  flex: 1 1 auto;
 }
-.linea__chart {
+.linea__lienzo > .linea__chart {
+  position: absolute !important; /* PrimeVue fuerza "relative" en línea; así la gráfica no empuja la altura de su tarjeta */
+  inset: 0;
   width: 100%;
   height: 100%;
 }
