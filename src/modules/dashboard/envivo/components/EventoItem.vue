@@ -24,13 +24,17 @@ const TEXTO = {
   <li class="evento" :class="`evento--${TEXTO[evento.tipo].clase}`">
     <i :class="TEXTO[evento.tipo].icono" aria-hidden="true" />
     <div class="evento__texto">
-      <strong>{{ TEXTO[evento.tipo].texto }}</strong>
-      <span>{{ evento.datos.idInteraccion }} · {{ evento.datos.plataforma }} · {{ evento.datos.tipo }}</span>
-      <span v-if="evento.datos.sentimiento !== null"
-        >sentimiento {{ decimal(evento.datos.sentimiento, 2) }}</span
+      <div class="evento__fila">
+        <strong>{{ TEXTO[evento.tipo].texto }}</strong>
+        <time :datetime="evento.fechaUtc">{{ formatearHora(evento.fechaUtc) }}</time>
+      </div>
+      <span
+        >{{ evento.datos.idInteraccion }} · {{ evento.datos.plataforma }} · {{ evento.datos.tipo
+        }}<template v-if="evento.datos.sentimiento !== null">
+          · sentimiento {{ decimal(evento.datos.sentimiento, 2) }}</template
+        ></span
       >
     </div>
-    <time :datetime="evento.fechaUtc">{{ formatearHora(evento.fechaUtc) }}</time>
   </li>
 </template>
 
@@ -39,7 +43,7 @@ const TEXTO = {
   display: flex;
   align-items: flex-start;
   gap: 0.6rem;
-  padding: 0.5rem 0.6rem;
+  padding: 0.4rem 0.6rem;
   border-radius: 0.5rem;
   border-left: 3px solid var(--c360-borde);
   background: #f8fafc;
@@ -54,6 +58,12 @@ const TEXTO = {
 }
 .evento__texto span {
   color: var(--c360-texto-suave);
+}
+.evento__fila {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  align-items: baseline;
 }
 .evento time {
   font-variant-numeric: tabular-nums;

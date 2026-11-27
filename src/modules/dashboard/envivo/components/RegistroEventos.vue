@@ -20,11 +20,13 @@ const verTodos = ref(false)
   <TarjetaGrafica
     titulo="Últimos eventos"
     subtitulo="Se actualiza al instante · sin texto ni ubicación"
-    :vacio="eventos.length === 0"
-    mensaje-vacio="Sin eventos nuevos"
   >
     <div class="eventos">
-      <ol class="eventos__lista" aria-live="polite">
+      <p v-if="eventos.length === 0" class="eventos__vacio" role="status">
+        <i class="pi pi-inbox" aria-hidden="true" />
+        <span>Sin eventos nuevos</span>
+      </p>
+      <ol v-else class="eventos__lista" aria-live="polite">
         <EventoItem v-for="e in recientes" :key="e.id" :evento="e" />
       </ol>
       <Button
@@ -53,11 +55,13 @@ const verTodos = ref(false)
 
 <style scoped>
 .eventos {
+  /* Alto reservado para 5 eventos y el botón «Ver todos»: la tarjeta (y la del mapa de calor, que comparte fila)
+     no crece ni salta conforme van llegando eventos. */
+  min-height: 18rem;
   display: flex;
   flex-direction: column;
   gap: 0.4rem;
   flex: 1 1 auto;
-  min-height: 0;
 }
 .eventos__lista {
   list-style: none;
@@ -67,7 +71,15 @@ const verTodos = ref(false)
   flex-direction: column;
   gap: 0.4rem;
 }
+.eventos__vacio {
+  margin: auto;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--c360-texto-suave);
+}
 .eventos__lista--modal {
+  min-height: 0;
   max-height: 60vh;
   overflow-y: auto;
 }

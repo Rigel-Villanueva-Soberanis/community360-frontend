@@ -65,6 +65,12 @@ body {
   flex: 0 0 auto;
   grid-auto-rows: auto;
 }
+@media (min-width: 900px) {
+  /* El mapa de calor es ancho (24 columnas): con más ancho sus celdas crecen y llena mejor su tarjeta. */
+  .pagina > .pagina__rejilla--ajustada {
+    grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+  }
+}
 .pagina__cargando {
   color: var(--c360-texto-suave);
 }
