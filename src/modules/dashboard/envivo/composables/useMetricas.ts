@@ -12,7 +12,7 @@ import type {
   SnapshotMetricas,
 } from '../../types/metricas.types'
 
-export const MAX_EVENTOS = 12
+export const MAX_EVENTOS = 50
 const CLAVE_EVENTOS = 'c360.ultimosEventos'
 
 /**
