@@ -29,6 +29,11 @@ export const useSesionStore = defineStore('sesion', () => {
   function limpiar(): void {
     usuario.value = null
     cargada.value = true
+    try {
+      sessionStorage.removeItem('c360.ultimosEventos') // los eventos en vivo no sobreviven al cierre de sesión
+    } catch {
+      /* sin almacenamiento disponible */
+    }
   }
 
   /** Recupera la sesión desde la cookie (una vez por carga de página). 401 o red caída = sin sesión. */

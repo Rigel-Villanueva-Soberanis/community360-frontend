@@ -22,8 +22,10 @@ const info = computed(() => {
 <template>
   <p class="estado" :class="`estado--${info.clase}`" role="status">
     <i :class="info.icono" aria-hidden="true" />
-    <strong>{{ info.texto }}</strong>
-    <small v-if="ultimoMensajeUtc">actualizado {{ formatearHora(ultimoMensajeUtc) }}</small>
+    <span class="estado__texto">
+      <strong>{{ info.texto }}</strong>
+      <small v-if="ultimoMensajeUtc">actualizado {{ formatearHora(ultimoMensajeUtc) }}</small>
+    </span>
   </p>
 </template>
 
@@ -31,15 +33,23 @@ const info = computed(() => {
 .estado {
   display: inline-flex;
   align-items: center;
-  gap: 0.4rem;
+  gap: 0.45rem;
   margin: 0;
-  padding: 0.25rem 0.7rem;
+  padding: 0.3rem 0.75rem;
   border-radius: 999px;
   font-size: 0.85rem;
   border: 1px solid transparent;
 }
+.estado__texto {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.4rem;
+  line-height: 1.2;
+}
 .estado small {
   color: var(--c360-texto-suave);
+  font-size: 0.8rem;
+  line-height: inherit;
 }
 .estado--ok {
   background: #e8f6e8;

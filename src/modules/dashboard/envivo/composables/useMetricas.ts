@@ -13,6 +13,28 @@ import type {
 } from '../../types/metricas.types'
 
 export const MAX_EVENTOS = 12
+const CLAVE_EVENTOS = 'c360.ultimosEventos'
+
+/**
+ * Los últimos eventos se guardan en sessionStorage (solo id, plataforma, tipo y sentimiento; nunca texto ni
+ * ubicación ni token) para que sobrevivan a recargar la página. Se borran al cerrar la pestaña o la sesión.
+ */
+function leerEventos(): EventoRegistrado[] {
+  try {
+    const crudo = sessionStorage.getItem(CLAVE_EVENTOS)
+    const lista = crudo ? (JSON.parse(crudo) as EventoRegistrado[]) : []
+    return Array.isArray(lista) ? lista.slice(0, MAX_EVENTOS) : []
+  } catch {
+    return []
+  }
+}
+function guardarEventos(lista: EventoRegistrado[]): void {
+  try {
+    sessionStorage.setItem(CLAVE_EVENTOS, JSON.stringify(lista))
+  } catch {
+    /* sin almacenamiento disponible: la lista solo vive en memoria */
+  }
+}
 
 /**
  * Indicadores en vivo (I1–I9). El servidor manda el conjunto COMPLETO ya recalculado en cada cambio, y la
@@ -23,9 +45,9 @@ export function useMetricas() {
   const router = useRouter()
 
   const snapshot = shallowRef<SnapshotMetricas | null>(null)
-  const eventos = ref<EventoRegistrado[]>([])
+  const eventos = ref<EventoRegistrado[]>(leerEventos())
   const errorInicial = ref('')
-  let contador = 0
+  let contador = eventos.value.reduce((mayor, e) => Math.max(mayor, e.id), 0)
 
   function alMensaje(m: MensajeTiempoReal): void {
     snapshot.value = m.metricas
@@ -36,6 +58,7 @@ export function useMetricas() {
         { id: contador, tipo: m.tipo, fechaUtc: m.fechaUtc, datos: m.datos },
         ...eventos.value,
       ].slice(0, MAX_EVENTOS)
+      guardarEventos(eventos.value)
     }
   }
 
